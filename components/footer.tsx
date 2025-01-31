@@ -34,7 +34,7 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Button variant="ghost" size="icon" asChild className="h-8 w-8 md:h-10 md:w-10">
             <a
-              href="https://github.com/321208008"
+              href="https://github.com/ItusiAI"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
