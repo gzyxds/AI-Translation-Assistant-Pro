@@ -1,0 +1,518 @@
+{
+  "tabs": {
+    "image": "Image Recognition",
+    "speech": "Speech Recognition",
+    "text": "Text Translation",
+    "video": "Video Recognition",
+    "file": "File Recognition",
+    "pdf": "PDF Recognition"
+  },
+  "buttons": {
+    "getStarted": "Get Started",
+    "startTranslate": "Start Translation"
+  },
+  "uploadImage": "Upload Image",
+  "uploadAudio": "Upload Audio",
+  "uploadVideo": "Upload Video",
+  "uploadPDF": "Upload PDF",
+  "dropHere": "Drop to upload",
+  "dragAndDrop": "Drag and drop image file here, or click to upload",
+  "dragAndDropPDF": "Drag and drop PDF file here, or click to select",
+  "selectPDF": "Select PDF",
+  "extract": "Extract Text",
+  "selectLanguage": "Select Target Language",
+  "translate": "Translate",
+  "improve": "Improve",
+  "improveTooltip": "Use AI to improve translation",
+  "extractedText": "Extracted Text",
+  "translatedText": "Translation Result",
+  "noTextExtracted": "No text extracted yet",
+  "noTranslation": "No translation yet",
+  "startListening": "Start Recording",
+  "stopListening": "Stop Recording",
+  "error": {
+    "invalidFile": "Invalid File",
+    "invalidFileDesc": "Please upload an image file",
+    "invalidVideoFile": "Invalid Video File",
+    "invalidVideoFileDesc": "Please upload a video file",
+    "noImage": "No Image Selected",
+    "noImageDesc": "Please upload an image first",
+    "noText": "No Text Input",
+    "noTextDesc": "Please enter text to translate",
+    "noLanguage": "No Language Selected",
+    "noLanguageDesc": "Please select a target language",
+    "noTranslation": "No Translation",
+    "noTranslationDesc": "Please translate first",
+    "extracting": "Text Extraction Failed",
+    "extractingDesc": "Please try again later",
+    "translating": "Translation Failed",
+    "translatingDesc": "An error occurred during translation, please try again",
+    "improving": "Improvement Failed",
+    "improvingDesc": "An error occurred during improvement, please try again",
+    "speechNotSupported": "Speech Recognition Not Available",
+    "speechNotSupportedDesc": "Your browser does not support speech recognition",
+    "speechRecognition": "Speech Recognition Error",
+    "videoProcessing": "Video Processing Failed",
+    "videoProcessingDesc": "An error occurred during video processing, please try again",
+    "videoRecognition": "Video Recognition Error",
+    "onlyPDF": "Only PDF files are supported",
+    "fileTooLarge": "File Too Large",
+    "fileTooLargeDesc": "Video file size cannot exceed 100MB",
+    "videoUploadFailed": "Video Upload Failed",
+    "videoUploadFailedDesc": "Please check your network connection and try again, or try uploading a smaller video file",
+    "usageLimitExceeded": "Usage Limit Exceeded",
+    "imageLimitExceededDesc": "Daily image recognition limit reached, please try again tomorrow",
+    "pdfLimitExceededDesc": "Daily PDF recognition limit reached, please try again tomorrow",
+    "speechLimitExceededDesc": "Daily speech recognition limit reached, please try again tomorrow",
+    "videoLimitExceededDesc": "Daily video recognition limit reached, please try again tomorrow",
+    "serverUploadLimit": "Server Upload Limit",
+    "serverUploadLimitDesc": "Server limits single file upload size to 10MB. Please try compressing the video or uploading in segments",
+    "authRequired": "Login Required",
+    "pleaseLogin": "Please login to use this feature",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "cancelButton": "Cancel"
+  },
+  "success": {
+    "extracted": "Text extracted successfully",
+    "translated": "Translation successful",
+    "improved": "Improvement successful",
+    "speechRecognized": "Speech recognition successful",
+    "videoExtracted": "Video text extracted successfully",
+    "description": "Operation completed",
+    "fileExtracted": "File content extracted successfully",
+    "copied": "Copied successfully",
+    "imageUploaded": "Image uploaded successfully",
+    "audioRecognized": "Audio recognition successful",
+    "audioUploaded": "Audio uploaded successfully"
+  },
+  "selectService": "Select Translation Service",
+  "selectOcrService": "Select OCR Service",
+  "processing": "Processing video...",
+  "appName": "AI Translation Assistant",
+  "switchLanguage": "Switch Language",
+  "toggleTheme": "Toggle Theme",
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "languages": {
+    "english": "English",
+    "chinese": "中文"
+  },
+  "selectAsrService": "Select Speech Recognition Service",
+  "asrServices": {
+    "tencent": "Tencent Cloud"
+  },
+  "enterText": "Enter text to translate",
+  "chooseFile": "Choose File",
+  "ocrServices": {
+    "tencent": "Tencent Cloud",
+    "qwen": "Qwen",
+    "gemini": "Gemini",
+    "zhipu": "Zhipu AI",
+    "kimi": "Kimi",
+    "step": "Step AI"
+  },
+  "translationServices": {
+    "deepseek": "DeepSeek",
+    "qwen": "Qwen",
+    "gemini": "Gemini",
+    "zhipu": "Zhipu GLM4",
+    "hunyuan": "Tencent Hunyuan",
+    "4o-mini": "OpenAI",
+    "minnimax": "MinniMax",
+    "siliconflow": "Llama-3.3",
+    "claude_3_5": "Claude 3.5",
+    "kimi": "Kimi",
+    "step": "Step AI"
+  },
+  "videoServices": {
+    "gemini": "Gemini",
+    "zhipu": "Zhipu GLM4",
+    "qwen": "Qwen",
+    "kimi": "Kimi"
+  },
+  "title": "AI Translation Assistant",
+  "description": "High-quality multilingual translation powered by AI technology",
+  "landing": {
+    "hero": {
+      "title": "AI Translation Assistant",
+      "subtitle": "One-stop multilingual translation solution, supporting text, image, PDF, speech and video translation",
+      "cta": "Get Started",
+      "badge": "AI-Powered · Multilingual Support",
+      "subscribe": "Subscribe"
+    },
+    "features": {
+      "title": "Core Features",
+      "subtitle": "Comprehensive translation services for all your needs",
+      "text": {
+        "title": "Text Translation",
+        "description": "Translate long content with precise semantics and natural style"
+      },
+      "image": {
+        "title": "Image Translation",
+        "description": "Smart text recognition and translation from images"
+      },
+      "pdf": {
+        "title": "PDF Translation",
+        "description": "Extract and translate PDF documents while preserving formatting"
+      },
+      "speech": {
+        "title": "Speech Translation",
+        "description": "Real-time speech recognition and translation in multiple languages"
+      },
+      "video": {
+        "title": "Video Translation",
+        "description": "Generate multilingual subtitles for learning and content creation"
+      }
+    },
+    "highlights": {
+      "title": "Key Benefits",
+      "subtitle": "Experience the ultimate translation solution without barriers",
+      "multilingual": {
+        "title": "Multilingual Support",
+        "description": "Switch between Chinese and English interfaces"
+      },
+      "theme": {
+        "title": "Theme Switching",
+        "description": "Dark and light modes for better visual experience"
+      },
+      "privacy": {
+        "title": "Privacy Protection",
+        "description": "No data storage, ensuring information security"
+      },
+      "web": {
+        "title": "Web-based",
+        "description": "No download required, use anywhere anytime"
+      }
+    },
+    "steps": {
+      "title": "How It Works",
+      "subtitle": "Three simple steps to get your translation",
+      "select": {
+        "title": "Choose Function",
+        "description": "Select text, image, speech, or video translation"
+      },
+      "upload": {
+        "title": "Upload Content",
+        "description": "Upload files or input text directly"
+      },
+      "translate": {
+        "title": "Get Results",
+        "description": "Receive accurate translation quickly"
+      }
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "subtitle": "See what our users say about our service",
+      "1": {
+        "quote": "This translation tool is amazing! It supports multiple formats and delivers high-quality translations. The image text recognition feature has saved me tons of time.",
+        "author": "Zhang Ming",
+        "role": "Freelance Translator"
+      },
+      "2": {
+        "quote": "The interface is very intuitive and user-friendly. Dark mode is a blessing for someone like me who often works late.",
+        "author": "Li Hua",
+        "role": "Content Creator"
+      },
+      "3": {
+        "quote": "The PDF translation feature is incredibly useful, perfectly preserving the original format. It's been a great help for my academic research.",
+        "author": "Wang Fang",
+        "role": "Graduate Student"
+      },
+      "4": {
+        "quote": "As a developer, I appreciate the technical implementation. Fast API response and support for batch processing make it highly efficient.",
+        "author": "Chen Jie",
+        "role": "Software Engineer"
+      },
+      "5": {
+        "quote": "The speech translation feature works exceptionally well with high accuracy. It's essential for our international business.",
+        "author": "Liu Lin",
+        "role": "Business Manager"
+      },
+      "6": {
+        "quote": "The video subtitle translation feature has solved many problems for me, especially the automatic timeline sync which saves a lot of manual adjustment work.",
+        "author": "Zhao Yang",
+        "role": "Video Producer"
+      }
+    },
+    "footer": {
+      "browsers": "Supports all major browsers",
+      "privacy": "Committed to protecting your privacy"
+    }
+  },
+  "translate": {
+    "selectVideoService": "Select Video Service",
+    "videoService": "Video Recognition Service",
+    "zhipu": "Zhipu AI",
+    "aliyun": "Alibaba Cloud",
+    "uploadVideo": "Upload Video"
+  },
+  "banner": {
+    "text": "AI Translation Assistant is now live with limited-time free trial. Follow us on Twitter for updates",
+    "twitter": "https://x.com/zyailive"
+  },
+  "usage": {
+    "remainingToday": "Remaining Today: {0}/{1}",
+    "textTranslation": "Text Translation",
+    "imageRecognition": "Image Recognition",
+    "pdfRecognition": "PDF Recognition",
+    "speechRecognition": "Speech Recognition",
+    "videoRecognition": "Video Recognition",
+    "dailyLimit": "Daily Free Usage",
+    "loginToGet": "Login to access more features",
+    "unlimited": "Unlimited text translation"
+  },
+  "toggleTheme": "Toggle theme",
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "profileButton": "Profile",
+    "profile": {
+      "title": "Profile",
+      "description": "View your account information and usage quotas",
+      "basicInfo": {
+        "title": "Basic Information",
+        "email": "Email",
+        "username": "Username",
+        "userId": "User ID",
+        "registerTime": "Registration Time",
+        "editUsername": {
+          "placeholder": "Enter new username",
+          "save": "Save",
+          "cancel": "Cancel",
+          "success": "Username updated successfully",
+          "error": {
+            "empty": "Username cannot be empty",
+            "failed": "Update failed, please try again"
+          }
+        },
+        "social": {
+          "github": "GitHub",
+          "google": "Google",
+          "bound": "Connected",
+          "unbound": "Not Connected",
+          "bind": "Connect %{provider}",
+          "bindFailed": "Failed to connect %{provider}"
+        }
+      },
+      "subscription": {
+        "title": "Subscription",
+        "plan": {
+          "trial": "Free Plan",
+          "monthly": "Monthly Plan",
+          "yearly": "Yearly Plan"
+        },
+        "customerId": "Customer ID",
+        "subscriptionId": "Subscription ID",
+        "expiryDate": "Expires: {date}",
+        "success": "Subscription successful! Thank you for your support",
+        "quota": {
+          "text": "Text Translation",
+          "image": "Image Recognition",
+          "pdf": "PDF Recognition",
+          "speech": "Speech Recognition",
+          "video": "Video Recognition",
+          "unlimited": "Unlimited",
+          "usage": "{used}/{quota}"
+        },
+        "dialog": {
+          "title": "Upgrade to Premium",
+          "description": "Upgrade to premium for more daily usage and a smoother translation experience.",
+          "benefits": {
+            "title": "Premium Benefits:",
+            "imageQuota": "50 image recognitions per day",
+            "pdfQuota": "40 PDF processings per day",
+            "speechQuota": "30 speech recognitions per day",
+            "videoQuota": "10 video processings per day",
+            "priority": "Priority processing queue"
+          },
+          "buttons": {
+            "cancel": "Not Now",
+            "viewPlans": "View Plans"
+          }
+        }
+      }
+    },
+    "signOut": {
+      "action": "Sign Out",
+      "success": "Signed out successfully",
+      "error": "Failed to sign out"
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Enter your email and password to sign in",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "button": "Sign in",
+      "loading": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "error": {
+        "invalidCredentials": "Invalid email or password",
+        "required": "Please enter email and password"
+      },
+      "github": "Continue with GitHub",
+      "or": "or",
+      "google": "Continue with Google"
+    },
+    "register": {
+      "title": "Sign up",
+      "subtitle": "Create your account",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Enter your password again",
+      "button": "Sign up",
+      "loading": "Signing up...",
+      "hasAccount": "Already have an account?",
+      "error": {
+        "passwordMismatch": "Passwords do not match",
+        "emailExists": "Email is already registered",
+        "required": "Please fill in all required fields"
+      },
+      "github": "Continue with GitHub",
+      "or": "or",
+      "success": "Registration successful",
+      "error": {
+        "passwordMismatch": "Passwords do not match",
+        "emailExists": "Email is already registered",
+        "required": "Please fill in all required fields"
+      },
+      "google": "Continue with Google"
+    },
+    "error": {
+      "accessDenied": "Access denied, please try again",
+      "default": "An error occurred during login, please try again"
+    }
+  },
+  "quota": {
+    "types": {
+      "text": "Text Translation",
+      "image": "Image Recognition",
+      "pdf": "PDF Recognition",
+      "speech": "Speech Recognition",
+      "video": "Video Recognition"
+    },
+    "unlimited": "Unlimited",
+    "times": "times",
+    "remaining": "Remaining: %{count}",
+    "errors": {
+      "notLoggedIn": "Please login first",
+      "userNotFound": "User not found",
+      "invalidType": "Invalid usage type",
+      "limitReached": "Daily usage limit reached",
+      "recordFailed": "Failed to record usage",
+      "checkFailed": "Failed to check quota"
+    }
+  },
+  "pricing": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose your plan and unlock unlimited translation",
+    "tiers": {
+      "free": {
+        "name": "Free Trial",
+        "description": "Experience basic features",
+        "cta": "Start Trial",
+        "features": {
+          "basic": [
+            "Unlimited text translation",
+            "10 image recognitions/day",
+            "8 PDF recognitions/day"
+          ],
+          "advanced": [
+            "5 speech recognitions/day",
+            "2 video recognitions/day"
+          ],
+          "support": [
+            "Basic support"
+          ]
+        }
+      },
+      "monthly": {
+        "name": "Monthly Plan",
+        "description": "Perfect for individual use",
+        "cta": "Subscribe Now",
+        "period": "mo",
+        "features": {
+          "basic": [
+            "Unlimited text translation",
+            "50 image recognitions/day",
+            "40 PDF recognitions/day"
+          ],
+          "advanced": [
+            "30 speech recognitions/day",
+            "10 video recognitions/day",
+            "Priority processing"
+          ],
+          "support": [
+            "Priority support"
+          ]
+        }
+      },
+      "yearly": {
+        "name": "Annual Plan",
+        "description": "Best value for money",
+        "cta": "Subscribe Now",
+        "recommended": "Recommended",
+        "discount": "Save 17%",
+        "features": {
+          "basic": [
+            "Unlimited text translation",
+            "100 image recognitions/day",
+            "80 PDF recognitions/day"
+          ],
+          "advanced": [
+            "60 speech recognitions/day",
+            "20 video recognitions/day",
+            "Priority processing"
+          ],
+          "support": [
+            "24/7 dedicated support",
+            "API access"
+          ]
+        }
+      }
+    },
+    "features": {
+      "basic": "Basic Features",
+      "advanced": "Advanced Features",
+      "support": "Support Services"
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "If you have any other questions, feel free to contact us",
+      "cards": {
+        "security": {
+          "title": "Data Security",
+          "content": "We don't store any of your files or translation content. All data is only temporarily used during processing and won't be uploaded to the cloud, ensuring your privacy throughout."
+        },
+        "quota": {
+          "title": "Quota Calculation",
+          "content": "Quotas reset daily at midnight. Unused quotas won't accumulate to the next day."
+        },
+        "payment": {
+          "title": "Payment Methods",
+          "content": "We support debit cards, credit cards, WeChat Pay, and Alipay. All payment information is encrypted to ensure your financial security."
+        },
+        "support": {
+          "title": "Contact Support",
+          "content": "If you have any questions or need assistance, please email us at wt@wmcircle.cn and we'll get back to you as soon as possible."
+        }
+      }
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing"
+  },
+  "extracting": "Extracting...",
+  "translating": "Translating...",
+  "selectImage": "Select Image"
+} 

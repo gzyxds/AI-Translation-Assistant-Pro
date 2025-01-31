@@ -1,0 +1,21 @@
+{
+  "name": "AI Translation Assistant",
+  "short_name": "AI Translate",
+  "description": "All-in-one intelligent translation solution supporting text, image, PDF, speech, and video translation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020817",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 

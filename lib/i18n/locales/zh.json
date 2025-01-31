@@ -1,0 +1,534 @@
+{
+  "tabs": {
+    "image": "图片识别",
+    "speech": "语音识别",
+    "text": "文本翻译",
+    "video": "视频识别",
+    "file": "文件识别",
+    "pdf": "PDF识别"
+  },
+  "buttons": {
+    "getStarted": "立即体验",
+    "startTranslate": "开始翻译"
+  },
+  "uploadImage": "上传图片",
+  "uploadAudio": "上传语音",
+  "uploadVideo": "上传视频",
+  "dropHere": "放开以上传",
+  "dragAndDrop": "拖放图片到此处，或点击选择文件",
+  "extractText": "提取文字",
+  "extract": "提取文字",
+  "extracting": "提取中...",
+  "selectLanguage": "选择目标语言",
+  "translate": "开始翻译",
+  "translating": "翻译中...",
+  "improve": "优化",
+  "improveTooltip": "使用 AI 优化翻译结果",
+  "extractedText": "提取的文字",
+  "translatedText": "翻译结果",
+  "noTextExtracted": "尚未提取文字",
+  "noTranslation": "尚未翻译",
+  "startListening": "开始录音识别",
+  "stopListening": "停止录音",
+  "selectImage": "选择图片",
+  "error": {
+    "invalidFile": "无效的文件",
+    "invalidFileDesc": "请上传图片文件",
+    "invalidVideoFile": "无效的视频文件",
+    "invalidVideoFileDesc": "请上传视频文件",
+    "noImage": "未选择图片",
+    "noImageDesc": "请先上传一张图片",
+    "noText": "未输入文本",
+    "noTextDesc": "请输入需要翻译的文本",
+    "noLanguage": "未选择语言",
+    "noLanguageDesc": "请选择目标语言",
+    "noTranslation": "无翻译内容",
+    "noTranslationDesc": "请先进行翻译",
+    "extracting": "提取文字失败",
+    "extractingDesc": "请稍后重试",
+    "translating": "翻译失败",
+    "translatingDesc": "翻译过程中出现错误，请重试",
+    "improving": "优化失败",
+    "improvingDesc": "优化过程中出现错误，请重试",
+    "speechNotSupported": "语音识别不可用",
+    "speechNotSupportedDesc": "您的浏览器不支持语音识别功能",
+    "speechRecognition": "语音识别错误",
+    "videoProcessing": "视频处理失败",
+    "videoProcessingDesc": "视频处理过程中出现错误，请重试",
+    "videoRecognition": "视频识别错误",
+    "invalidFileType": "无效的文件类型",
+    "invalidFileTypeDesc": "请上传 PDF、Word 或图片文件",
+    "fileProcessing": "文件处理失败",
+    "fileProcessingDesc": "文件处理过程中出现错误，请重试",
+    "onlyPDF": "只支持PDF文件",
+    "fileTooLarge": "文件太大",
+    "fileTooLargeDesc": "视频文件大小不能超过 100MB",
+    "videoUploadFailed": "视频上传失败",
+    "videoUploadFailedDesc": "请检查网络连接并重试，或尝试上传小一点的视频文件",
+    "usageLimitExceeded": "使用次数已达上限",
+    "imageLimitExceededDesc": "今日图片识别次数已用完，请明天再试",
+    "pdfLimitExceededDesc": "今日PDF识别次数已用完，请明天再试",
+    "speechLimitExceededDesc": "今日语音识别次数已用完，请明天再试",
+    "videoLimitExceededDesc": "今日视频识别次数已用完，请明天再试",
+    "serverUploadLimit": "服务器上传限制",
+    "serverUploadLimitDesc": "服务器限制单个文件最大上传大小为 10MB，请尝试压缩视频或分段上传",
+    "authRequired": "需要登录",
+    "pleaseLogin": "请先登录以使用此功能",
+    "loginButton": "去登录",
+    "registerButton": "去注册",
+    "cancelButton": "取消"
+  },
+  "success": {
+    "extracted": "文字提取成功",
+    "translated": "翻译成功",
+    "improved": "优化成功",
+    "speechRecognized": "语音识别成功",
+    "videoExtracted": "视频文字提取成功",
+    "description": "操作已完成",
+    "fileExtracted": "文件内容提取成功",
+    "copied": "复制成功",
+    "imageUploaded": "图片上传成功",
+    "audioRecognized": "语音识别成功",
+    "audioUploaded": "语音上传成功"
+  },
+  "selectService": "选择翻译服务",
+  "selectOcrService": "选择文字识别服务",
+  "processing": "正在处理中...",
+  "appName": "智能翻译助手",
+  "switchLanguage": "切换语言",
+  "toggleTheme": "切换主题",
+  "theme": {
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "languages": {
+    "english": "English",
+    "chinese": "中文"
+  },
+  "selectAsrService": "选择语音识别服务",
+  "asrServices": {
+    "tencent": "腾讯云"
+  },
+  "enterText": "请输入要翻译的文本",
+  "chooseFile": "选择文件",
+  "uploadFile": "上传文件",
+  "fileRecognition": "文件识别",
+  "uploadPDF": "上传PDF文件",
+  "dragAndDropPDF": "拖放 PDF 文件到此处，或点击选择文件",
+  "selectPDF": "选择 PDF 文件",
+  "selectVideoService": "选择视频服务",
+  "videoServices": {
+    "gemini": "Gemini",
+    "zhipu": "Zhipu GLM4",
+    "qwen": "Qwen",
+    "kimi": "Kimi"
+  },
+  "ocrServices": {
+    "tencent": "腾讯云",
+    "qwen": "通义千问",
+    "gemini": "Gemini",
+    "zhipu": "智谱 AI",
+    "kimi": "Kimi",
+    "step": "阶跃星辰"
+  },
+  "translationServices": {
+    "deepseek": "DeepSeek",
+    "qwen": "通义千问",
+    "gemini": "Gemini",
+    "zhipu": "智谱GLM4",
+    "hunyuan": "腾讯混元",
+    "4o-mini": "OpenAI",
+    "minnimax": "MinniMax",
+    "siliconflow": "Llama-3.3",
+    "claude_3_5": "Claude 3.5",
+    "kimi": "Kimi",
+    "step": "阶跃星辰"
+  },
+  "title": "智能翻译助手",
+  "description": "使用AI技术提供高质量的多语言翻译服务",
+  "landing": {
+    "hero": {
+      "title": "智能翻译助手",
+      "subtitle": "一站式多语言翻译解决方案，支持文本、图片、PDF、语音和视频翻译",
+      "cta": "立即体验",
+      "badge": "AI 驱动 · 多语言支持",
+      "subscribe": "订阅会员"
+    },
+    "features": {
+      "title": "核心功能",
+      "subtitle": "为您提供全方位的翻译服务，满足不同场景的需求",
+      "text": {
+        "title": "文本翻译",
+        "description": "支持长篇内容翻译，语义精准自然，保持原文风格"
+      },
+      "image": {
+        "title": "图片翻译",
+        "description": "智能识别图片中的文字，快速准确翻译"
+      },
+      "pdf": {
+        "title": "PDF翻译",
+        "description": "自动提取PDF文档内容，保持格式翻译"
+      },
+      "speech": {
+        "title": "语音翻译",
+        "description": "实时语音识别与翻译，支持多种语言互译"
+      },
+      "video": {
+        "title": "视频翻译",
+        "description": "自动生成多语言字幕，适合学习与创作场景"
+      }
+    },
+    "highlights": {
+      "title": "产品特色",
+      "subtitle": "打造极致的翻译体验，让语言不再成为障碍",
+      "multilingual": {
+        "title": "多语言支持",
+        "description": "支持中英文界面切换，满足国际化需求"
+      },
+      "theme": {
+        "title": "主题切换",
+        "description": "提供暗色与亮色模式，保护视觉体验"
+      },
+      "privacy": {
+        "title": "隐私保护",
+        "description": "不保存用户数据，确保信息安全"
+      },
+      "web": {
+        "title": "纯网页版",
+        "description": "无需下载安装，随时随地使用"
+      }
+    },
+    "steps": {
+      "title": "使用流程",
+      "subtitle": "简单三步，轻松完成翻译",
+      "select": {
+        "title": "选择功能",
+        "description": "根据需求选择文本、图片、语音或视频翻译"
+      },
+      "upload": {
+        "title": "上传内容",
+        "description": "上传需要翻译的文件或直接输入文本"
+      },
+      "translate": {
+        "title": "获取结果",
+        "description": "快速获得准确的翻译结果"
+      }
+    },
+    "testimonials": {
+      "title": "用户评价",
+      "subtitle": "看看其他用户如何评价我们的服务",
+      "1": {
+        "quote": "这个翻译工具太棒了！不仅支持多种格式，翻译质量也非常高。特别是图片文字识别功能，帮我节省了大量时间。",
+        "author": "张明",
+        "role": "自由译者"
+      },
+      "2": {
+        "quote": "界面设计非常直观，使用起来特别方便。暗色模式对我这种经常熬夜工作的人来说简直是福音。",
+        "author": "李华",
+        "role": "内容创作者"
+      },
+      "3": {
+        "quote": "PDF文档翻译功能非常实用，完美保留了原文格式。对我的学术研究帮助很大。",
+        "author": "王芳",
+        "role": "研究生"
+      },
+      "4": {
+        "quote": "作为一名开发者，我很欣赏这个工具的技术实现。API响应速度快，而且支持批量处理，效率很高。",
+        "author": "陈杰",
+        "role": "软件工程师"
+      },
+      "5": {
+        "quote": "语音翻译功能特别好用，准确率很高。对我们做国际业务的来说是必备工具。",
+        "author": "刘琳",
+        "role": "商务经理"
+      },
+      "6": {
+        "quote": "视频字幕翻译功能帮我解决了很多问题，特别是自动同步时间轴的功能，省去了大量手动调整的工作。",
+        "author": "赵阳",
+        "role": "视频制作者"
+      }
+    },
+    "footer": {
+      "browsers": "支持所有主流浏览器",
+      "privacy": "承诺保护您的隐私"
+    }
+  },
+  "translate": {
+    "selectVideoService": "选择视频服务",
+    "videoService": "视频识别服务",
+    "zhipu": "智谱 AI",
+    "aliyun": "阿里云",
+    "uploadVideo": "上传视频",
+    "dragAndDrop": "拖放视频文件到此处，或点击上传",
+    "processing": "正在处理视频...",
+    "extractedText": "提取的文本",
+    "success": {
+      "copied": "复制成功",
+      "description": "文本已复制到剪贴板"
+    }
+  },
+  "banner": {
+    "text": "AI 翻译助手全新上线，限时限量免费体验，功能更新请关注推特",
+    "twitter": "https://x.com/zyailive"
+  },
+  "usage": {
+    "remainingToday": "今日剩余次数：{0}/{1}",
+    "textTranslation": "文本翻译",
+    "imageRecognition": "图片识别",
+    "pdfRecognition": "PDF识别",
+    "speechRecognition": "语音识别",
+    "videoRecognition": "视频识别",
+    "dailyLimit": "每日免费次数",
+    "loginToGet": "登录后可使用更多功能",
+    "unlimited": "文本翻译不限次数"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "profileButton": "个人资料",
+    "profile": {
+      "title": "个人资料",
+      "description": "查看您的账户信息和使用配额",
+      "basicInfo": {
+        "title": "基本信息",
+        "email": "邮箱",
+        "username": "用户名",
+        "userId": "用户ID",
+        "registerTime": "注册时间",
+        "editUsername": {
+          "placeholder": "请输入新的用户名",
+          "save": "保存",
+          "cancel": "取消",
+          "success": "用户名更新成功",
+          "error": {
+            "empty": "用户名不能为空",
+            "failed": "更新失败，请重试"
+          }
+        },
+        "social": {
+          "github": "GitHub",
+          "google": "Google",
+          "bound": "已绑定",
+          "unbound": "未绑定",
+          "bind": "绑定{provider}",
+          "bindFailed": "{provider}绑定失败"
+        }
+      },
+      "subscription": {
+        "title": "订阅信息",
+        "plan": {
+          "trial": "免费版",
+          "monthly": "月度会员",
+          "yearly": "年度会员"
+        },
+        "customerId": "客户ID",
+        "subscriptionId": "订阅ID",
+        "expiryDate": "到期时间: {date}",
+        "success": "订阅成功！感谢您的支持",
+        "quota": {
+          "text": "文本翻译",
+          "image": "图片识别",
+          "pdf": "PDF识别",
+          "speech": "语音识别",
+          "video": "视频识别",
+          "unlimited": "无限制",
+          "usage": "{used}/{quota}"
+        },
+        "dialog": {
+          "title": "升级到会员版",
+          "description": "升级到会员版即可享受更多的使用次数，让您的翻译体验更加流畅。",
+          "benefits": {
+            "title": "会员版特权：",
+            "imageQuota": "每日50次图片识别",
+            "pdfQuota": "每日40次PDF处理",
+            "speechQuota": "每日30次语音识别",
+            "videoQuota": "每日10次视频处理",
+            "priority": "优先处理队列"
+          },
+          "buttons": {
+            "cancel": "暂不升级",
+            "viewPlans": "查看会员方案"
+          }
+        }
+      }
+    },
+    "signOut": {
+      "action": "退出登录",
+      "success": "退出登录成功",
+      "error": "退出登录失败"
+    },
+    "login": {
+      "title": "登录",
+      "subtitle": "输入您的邮箱和密码登录",
+      "email": "邮箱",
+      "emailPlaceholder": "请输入邮箱",
+      "password": "密码",
+      "passwordPlaceholder": "请输入密码",
+      "button": "登录",
+      "loading": "登录中...",
+      "noAccount": "还没有账号？",
+      "error": {
+        "invalidCredentials": "邮箱或密码错误",
+        "required": "请输入邮箱和密码"
+      },
+      "github": "使用 GitHub 账号登录",
+      "or": "或者",
+      "google": "使用 Google 账号登录"
+    },
+    "register": {
+      "title": "注册",
+      "subtitle": "创建您的账号",
+      "email": "邮箱",
+      "emailPlaceholder": "请输入邮箱",
+      "password": "密码",
+      "passwordPlaceholder": "请输入密码",
+      "confirmPassword": "确认密码",
+      "confirmPasswordPlaceholder": "请再次输入密码",
+      "button": "注册",
+      "loading": "注册中...",
+      "hasAccount": "已有账号？",
+      "error": {
+        "passwordMismatch": "两次输入的密码不一致",
+        "emailExists": "该邮箱已被注册",
+        "required": "请填写所有必填项"
+      },
+      "github": "使用 GitHub 账号注册",
+      "or": "或者",
+      "success": "注册成功",
+      "error": {
+        "passwordMismatch": "两次输入的密码不一致",
+        "emailExists": "该邮箱已被注册",
+        "required": "请填写所有必填项"
+      },
+      "google": "使用 Google 账号注册"
+    },
+    "error": {
+      "accessDenied": "授权访问被拒绝，请重试",
+      "default": "登录时发生错误，请重试"
+    }
+  },
+  "quota": {
+    "types": {
+      "text": "文本翻译",
+      "image": "图片识别",
+      "pdf": "PDF识别",
+      "speech": "语音识别",
+      "video": "视频识别"
+    },
+    "unlimited": "无限制",
+    "times": "次",
+    "remaining": "剩余次数: %{count}",
+    "errors": {
+      "notLoggedIn": "请先登录",
+      "userNotFound": "用户不存在",
+      "invalidType": "无效的使用类型",
+      "limitReached": "今日使用次数已达上限",
+      "recordFailed": "记录使用失败",
+      "checkFailed": "使用配额检查失败"
+    }
+  },
+  "pricing": {
+    "title": "定价方案",
+    "subtitle": "选择适合您的方案，开启无限翻译体验",
+    "tiers": {
+      "free": {
+        "name": "试用版",
+        "description": "体验基础功能",
+        "cta": "开始试用",
+        "features": {
+          "basic": [
+            "无限文本翻译",
+            "每日10次图片识别",
+            "每日8次PDF处理"
+          ],
+          "advanced": [
+            "每日5次语音识别",
+            "每日2次视频处理"
+          ],
+          "support": [
+            "基础客服支持"
+          ]
+        }
+      },
+      "monthly": {
+        "name": "月度会员",
+        "description": "适合个人日常使用",
+        "cta": "立即订阅",
+        "period": "月",
+        "features": {
+          "basic": [
+            "无限文本翻译",
+            "每日50次图片识别",
+            "每日40次PDF处理"
+          ],
+          "advanced": [
+            "每日30次语音识别",
+            "每日10次视频处理",
+            "优先处理队列"
+          ],
+          "support": [
+            "优先客服支持"
+          ]
+        }
+      },
+      "yearly": {
+        "name": "年度会员",
+        "description": "最超值的选择",
+        "cta": "立即订阅",
+        "recommended": "推荐方案",
+        "discount": "省17%",
+        "features": {
+          "basic": [
+            "无限文本翻译",
+            "每日100次图片识别",
+            "每日80次PDF处理"
+          ],
+          "advanced": [
+            "每日60次语音识别",
+            "每日20次视频处理",
+            "优先处理队列"
+          ],
+          "support": [
+            "24/7专属客服",
+            "高级API访问"
+          ]
+        }
+      }
+    },
+    "features": {
+      "basic": "基础功能",
+      "advanced": "高级功能",
+      "support": "支持服务"
+    },
+    "monthly": "月",
+    "yearly": "年",
+    "faq": {
+      "title": "常见问题",
+      "subtitle": "如果您还有其他问题，欢迎随时联系我们",
+      "cards": {
+        "security": {
+          "title": "数据安全",
+          "content": "我们不会存储您的任何文件和翻译内容，所有数据仅在处理时临时使用，不会上传云端，全程保护您的隐私安全。"
+        },
+        "quota": {
+          "title": "配额计算规则",
+          "content": "配额按自然日重置，每天0点更新额度。未使用的配额不会累积到下一天。"
+        },
+        "payment": {
+          "title": "支付方式",
+          "content": "我们支持储蓄卡、信用卡、微信、支付宝等多种支付方式。所有支付信息都经过加密处理，确保您的资金安全。"
+        },
+        "support": {
+          "title": "联系客服",
+          "content": "如果您有任何问题或需要帮助，欢迎发送邮件至 wt@wmcircle.cn，我们会尽快回复您。"
+        }
+      }
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "features": "功能",
+    "pricing": "价格"
+  }
+} 
