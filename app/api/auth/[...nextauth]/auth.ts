@@ -22,7 +22,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('请输入邮箱和密码')
+          throw new Error('Please enter email and password')
         }
 
         try {
@@ -33,14 +33,14 @@ export const authOptions: AuthOptions = {
           console.log('查询到的用户数据:', user)
 
           if (!user || !user.password_hash) {
-            throw new Error('邮箱或密码错误')
+            throw new Error('Invalid email or password')
           }
 
           const isValid = await bcrypt.compare(credentials.password, user.password_hash)
           console.log('密码比较结果:', isValid)
           
           if (!isValid) {
-            throw new Error('邮箱或密码错误')
+            throw new Error('Invalid email or password')
           }
 
           return {
@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
           }
         } catch (error) {
           console.error('登录验证错误:', error)
-          throw new Error('认证服务器错误，请稍后重试')
+          throw new Error('Authentication server error, please try again later')
         }
       }
     }),

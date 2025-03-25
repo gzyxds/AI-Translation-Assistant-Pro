@@ -93,19 +93,26 @@ export default function PricingPage() {
     }
   ]}, [pricing])
 
-  const renderFeatureSection = (features: string[], title: string) => (
-    <div className="mb-6">
-      <h4 className="text-sm font-medium text-muted-foreground mb-3">{pricing.features[title]}</h4>
-      <ul className="space-y-3">
-        {features.map((feature) => (
-          <li key={feature} className="flex items-center gap-2">
-            <Check className="h-5 w-5 text-primary flex-shrink-0" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  const renderFeatureSection = (features: string[], title: string, tierId?: string) => {
+    // 为免费版使用特殊的键名
+    const sectionTitle = tierId === 'free' && (title === 'advanced' || title === 'support') 
+      ? `free${title.charAt(0).toUpperCase() + title.slice(1)}` 
+      : title;
+    
+    return (
+      <div className="mb-6">
+        <h4 className="text-sm font-medium text-muted-foreground mb-3">{pricing.features[title]}</h4>
+        <ul className="space-y-3">
+          {features.map((feature) => (
+            <li key={feature} className="flex items-center gap-2">
+              <Check className="h-5 w-5 text-primary flex-shrink-0" />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 
   return (
     <div className="container py-20">
@@ -153,9 +160,9 @@ export default function PricingPage() {
             </div>
 
             <div className="space-y-6 mb-8">
-              {renderFeatureSection(tier.features.basic, 'basic')}
-              {renderFeatureSection(tier.features.advanced, 'advanced')}
-              {renderFeatureSection(tier.features.support, 'support')}
+              {renderFeatureSection(tier.features.basic, 'basic', tier.id)}
+              {renderFeatureSection(tier.features.advanced || tier.features.freeAdvanced, 'advanced', tier.id)}
+              {renderFeatureSection(tier.features.support || tier.features.freeSupport, 'support', tier.id)}
             </div>
 
             {tier.id === "free" ? (
@@ -208,9 +215,9 @@ export default function PricingPage() {
               </div>
             </div>
             <div className="space-y-4 mb-6">
-              {renderFeatureSection(tier.features.basic, 'basic')}
-              {renderFeatureSection(tier.features.advanced, 'advanced')}
-              {renderFeatureSection(tier.features.support, 'support')}
+              {renderFeatureSection(tier.features.basic, 'basic', tier.id)}
+              {renderFeatureSection(tier.features.advanced || tier.features.freeAdvanced, 'advanced', tier.id)}
+              {renderFeatureSection(tier.features.support || tier.features.freeSupport, 'support', tier.id)}
             </div>
             {tier.id === "free" ? (
               <Link href="/translate" className="w-full">

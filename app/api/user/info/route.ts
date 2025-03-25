@@ -99,6 +99,38 @@ export async function GET() {
       }
     })
 
+    // 检查订阅是否已过期
+    if (user.stripe_current_period_end) {
+      const currentPeriodEnd = new Date(user.stripe_current_period_end).getTime()
+      const now = new Date().getTime()
+      
+      if (now > currentPeriodEnd) {
+        console.log('订阅已过期，重置为试用版')
+        await sql`
+          UPDATE auth_users 
+          SET 
+            stripe_subscription_id = NULL,
+            stripe_price_id = NULL,
+            stripe_current_period_end = NULL,
+            text_quota = -1,
+            image_quota = 5,
+            pdf_quota = 3,
+            speech_quota = 2,
+            video_quota = 1
+          WHERE id = ${user.id}
+        `
+        
+        user.stripe_subscription_id = null
+        user.stripe_price_id = null
+        user.stripe_current_period_end = null
+        user.text_quota = -1
+        user.image_quota = 5
+        user.pdf_quota = 3
+        user.speech_quota = 2
+        user.video_quota = 1
+      }
+    }
+
     const today = new Date().toISOString().split('T')[0]
     console.log('当前日期:', today, '上次配额重置日期:', user.quota_reset_at)
 
@@ -126,10 +158,10 @@ export async function GET() {
       } else {
         quotaUpdate = {
           text_quota: -1,
-          image_quota: 10,
-          pdf_quota: 8,
-          speech_quota: 5,
-          video_quota: 2
+          image_quota: 5,
+          pdf_quota: 3,
+          speech_quota: 2,
+          video_quota: 1
         }
       }
 

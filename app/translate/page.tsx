@@ -27,11 +27,10 @@ import { extractVideoFrames, analyzeVideoContent, extractTextWithZhipu, extractF
 import { cn } from '@/lib/utils'
 import { Textarea } from '@/components/ui/textarea'
 import { extractTextWithDeepseek } from '@/lib/deepseek'
-import { extractPDFWithKimi } from '@/lib/kimi'
+import { extractPDFWithKimi, extractPDFContent, extractTextWithKimi } from '@/lib/kimi'
 import { useLanguage } from "@/components/language-provider"
 import { useAnalytics } from '@/lib/hooks/use-analytics'
 import { uploadToOSS } from '@/lib/aliyun-oss-client'
-import { extractTextWithKimi } from '@/lib/kimi'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -83,9 +82,11 @@ export default function TranslatePage() {
   const [ocrService, setOcrService] = useState('qwen')
   const [sourceText, setSourceText] = useState('')
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [pdfPreview, setPdfPreview] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>('')
   const [isFileProcessing, setIsFileProcessing] = useState(false)
-  const [fileService, setFileService] = useState('deepseek')
+  const [fileService, setFileService] = useState('mistral') // 默认使用 Mistral OCR
   const [videoService, setVideoService] = useState('zhipu')
   const { trackEvent } = useAnalytics()
   const [showAuthDialog, setShowAuthDialog] = useState(false)
@@ -111,7 +112,7 @@ export default function TranslatePage() {
       const response = await fetch('/api/user/info')
       const data = await response.json()
       if (data.error) {
-        console.error('获取配额失败:', t(data.error))
+        console.error(t('console.quotaFetchFailed'), t(data.error))
         return
       }
       // 设置配额信息
@@ -124,7 +125,7 @@ export default function TranslatePage() {
         usage: data.usage
       })
     } catch (error) {
-      console.error('获取配额信息失败:', error)
+      console.error(t('console.quotaInfoFetchFailed'), error)
     }
   }
 
@@ -132,12 +133,6 @@ export default function TranslatePage() {
     if (session) {
       // 初始获取配额信息
       fetchQuotaInfo()
-
-      // 每5秒刷新一次配额信息
-      const intervalId = setInterval(fetchQuotaInfo, 5000)
-
-      // 清理定时器
-      return () => clearInterval(intervalId)
     }
   }, [session])
 
@@ -172,7 +167,7 @@ export default function TranslatePage() {
       fetchQuotaInfo()
       return true
     } catch (error) {
-      console.error('更新使用次数失败:', error)
+      console.error(t('console.usageUpdateFailed'), error)
       return false
     }
   }, [session, t, toast])
@@ -314,45 +309,18 @@ export default function TranslatePage() {
       return;
     }
 
-    // 检查配额
-    if (!hasRemainingQuota('pdf')) {
-      setShowSubscriptionDialog(true);
-      return;
-    }
-
-    // 记录使用次数
-    if (!await checkAndUpdateUsage('pdf')) {
-      return;
-    }
-
-    try {
-      setIsFileProcessing(true)
-      setFileContent('')
-      
-      const content = await extractPDFWithKimi(file, (status) => {
-        toast({
-          title: status,
-          description: t('success.description')
-        })
-      })
-      
-      setFileContent(content)
-      toast({
-        title: t('success.fileExtracted'),
-        description: t('success.description')
-      })
-    } catch (error: any) {
-      console.error('文件处理错误:', error)
-      toast({
-        title: t('error.fileProcessing'),
-        description: error.message || t('error.fileProcessingDesc'),
-        variant: "destructive"
-      })
-    } finally {
-      setIsFileProcessing(false)
-      // 清空文件输入框
-      e.target.value = ''
-    }
+    // 保存PDF文件以便后续处理
+    setPdfFile(file);
+    
+    // 创建PDF预览
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPdfPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    
+    // 清空文件输入框，以便可以再次选择同一文件
+    e.target.value = '';
   };
 
   const handleSpeechUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -371,11 +339,6 @@ export default function TranslatePage() {
     // 检查配额
     if (!hasRemainingQuota('speech')) {
       setShowSubscriptionDialog(true);
-      return;
-    }
-
-    // 记录使用次数
-    if (!await checkAndUpdateUsage('speech')) {
       return;
     }
 
@@ -398,6 +361,13 @@ export default function TranslatePage() {
           });
         }
       );
+      
+      // 处理成功后才记录使用次数
+      if (!await checkAndUpdateUsage('speech')) {
+        setIsProcessing(false);
+        setInterimText('');
+        return;
+      }
       
       setExtractedText(text);
       setInterimText('');
@@ -437,8 +407,9 @@ export default function TranslatePage() {
       return;
     }
 
-    // 先检查配额
-    if (!await checkAndUpdateUsage('video')) {
+    // 检查配额
+    if (!hasRemainingQuota('video')) {
+      setShowSubscriptionDialog(true);
       return;
     }
 
@@ -446,18 +417,18 @@ export default function TranslatePage() {
     setIsProcessing(true);
     try {
       if (videoService === 'zhipu') {
-        console.log('开始提取视频帧...');
+        console.log(t('console.videoFramesExtracting'));
         const frames = await extractVideoFrames(file);
-        console.log('视频帧提取完成，帧数:', frames.length);
-        console.log('第一帧数据示例:', frames[0].substring(0, 100) + '...');
+        console.log(t('console.videoFramesExtracted', [frames.length]));
+        console.log(t('console.videoFramesExample', [frames[0].substring(0, 100) + '...']));
         const text = await analyzeVideoContent(frames);
-        console.log('视频处理完成，提取的文本长度:', text.length);
+        console.log(t('console.videoProcessed', [text.length]));
         setExtractedText(text);
       } else if (videoService === 'aliyun') {
         try {
           // 直接上传到 OSS
           const videoUrl = await uploadToOSS(file);
-          console.log('视频上传成功，URL:', videoUrl);
+          console.log(t('console.videoUploaded', [videoUrl]));
 
           // 创建视频识别任务
           const createResponse = await fetch('/api/aliyun/video-ocr/create', {
@@ -472,7 +443,7 @@ export default function TranslatePage() {
 
           if (!createResponse.ok) {
             const errorText = await createResponse.text();
-            console.error('创建视频识别任务失败:', errorText);
+            console.error(t('console.videoTaskCreateFailed', [errorText]));
             throw new Error(t('error.videoProcessingDesc'));
           }
 
@@ -481,7 +452,7 @@ export default function TranslatePage() {
             throw new Error(t('error.videoProcessingDesc'));
           }
 
-          console.log('开始轮询任务状态...');
+          console.log(t('console.videoTaskPolling'));
           const result = await pollTaskStatus(createResult.taskId);
           
           if (!result || !result.raw) {
@@ -489,7 +460,7 @@ export default function TranslatePage() {
           }
 
           // 处理OCR结果
-          console.log('开始处理OCR结果:', result);
+          console.log(t('console.videoOcrProcessing'));
           
           // 创建一个Map来存储时间戳对应的文本
           const textMap = new Map<number, Set<string>>();
@@ -570,13 +541,13 @@ export default function TranslatePage() {
               .filter(text => text.length > 0);
 
             const combinedText = sortedTexts.join('\n');
-            console.log('提取的文本:', combinedText);
+            console.log(t('console.videoOcrResult', [combinedText]));
             
             if (combinedText) {
               setSourceText(combinedText);
               setExtractedText(combinedText);
             } else {
-              console.log('没有提取到文本');
+              console.log(t('console.videoNoText'));
               toast({
                 title: t('error.noTextExtracted'),
                 description: t('error.noTextExtractedDesc'),
@@ -584,7 +555,7 @@ export default function TranslatePage() {
               });
             }
           } catch (error) {
-            console.error('处理OCR结果时出错:', error);
+            console.error(t('console.videoOcrError'), error);
             // 如果解析失败，尝试直接使用原始结果
             if (result.raw && typeof result.raw === 'string') {
               setSourceText(result.raw);
@@ -596,7 +567,7 @@ export default function TranslatePage() {
           setVideoFile(null);
           
         } catch (uploadError: any) {
-          console.error('视频上传错误:', uploadError);
+          console.error(t('console.videoUploadError'), uploadError);
           toast({
             title: t('error.videoUploadFailed'),
             description: uploadError.message || t('error.videoUploadFailedDesc'),
@@ -605,7 +576,14 @@ export default function TranslatePage() {
           return;
         }
       } else {
-        throw new Error('不支持的视频服务');
+        throw new Error(t('error.videoServiceNotSupported'));
+      }
+
+      // 处理成功后才记录使用次数
+      if (!await checkAndUpdateUsage('video')) {
+        setIsProcessing(false);
+        setVideoFile(null);
+        return;
       }
 
       toast({
@@ -613,7 +591,7 @@ export default function TranslatePage() {
         description: t('success.description')
       });
     } catch (error: any) {
-      console.error('视频处理错误:', error);
+      console.error(t('console.videoProcessingError'), error);
       toast({
         title: t('error.videoProcessing'),
         description: error.message || t('error.videoProcessingDesc'),
@@ -687,7 +665,7 @@ export default function TranslatePage() {
           break
       }
     } catch (error: any) {
-      console.error('文件处理失败:', error)
+      console.error(t('console.fileProcessingError'), error)
       if (error.message !== '配额不足') {
         toast({
           variant: "destructive",
@@ -786,7 +764,7 @@ export default function TranslatePage() {
       return result.raw;
     }
     
-    throw new Error('不支持的视频服务');
+    throw new Error(t('error.videoServiceNotSupported'));
   };
 
   // 处理文本翻译
@@ -841,8 +819,8 @@ export default function TranslatePage() {
       });
     } catch (error: any) {
       toast({
-        title: t('error.translating'),
-        description: error.message || t('error.translatingDesc'),
+        title: t('errors.translationError'),
+        description: error.message || t('errors.translationDesc'),
         variant: "destructive"
       });
     } finally {
@@ -962,12 +940,6 @@ export default function TranslatePage() {
 
     setIsProcessing(true);
     try {
-      // 记录使用次数
-      if (!await checkAndUpdateUsage('image')) {
-        setIsProcessing(false);
-        return;
-      }
-
       let result: string;
       switch (ocrService) {
         case 'tencent':
@@ -991,6 +963,13 @@ export default function TranslatePage() {
         default:
           result = await extractTextWithQwen(image);
       }
+
+      // 处理成功后才记录使用次数
+      if (!await checkAndUpdateUsage('image')) {
+        setIsProcessing(false);
+        return;
+      }
+
       setExtractedText(result);
       toast({
         title: t('success.extracted'),
@@ -998,8 +977,8 @@ export default function TranslatePage() {
       });
     } catch (error: any) {
       toast({
-        title: t('error.extracting'),
-        description: error.message || t('error.extractingDesc'),
+        title: t('errors.extract.extractingError'),
+        description: error.message || t('errors.extract.extractingDesc'),
         variant: "destructive"
       });
     } finally {
@@ -1009,7 +988,7 @@ export default function TranslatePage() {
 
   // 处理翻译
   const handleTranslate = async () => {
-    if (!extractedText || !selectedLanguage) {
+    if (!extractedText && !fileContent || !selectedLanguage) {
       toast({
         title: t('error.translating'),
         description: t('error.noLanguage'),
@@ -1024,31 +1003,31 @@ export default function TranslatePage() {
       try {
         switch (translationService) {
           case 'deepseek':
-            result = await translateWithDeepSeek(extractedText, selectedLanguage);
+            result = await translateWithDeepSeek(extractedText || fileContent, selectedLanguage);
             break;
           case 'qwen':
-            result = await translateWithQwen(extractedText, selectedLanguage);
+            result = await translateWithQwen(extractedText || fileContent, selectedLanguage);
             break;
           case 'gemini':
-            result = await translateText(extractedText, selectedLanguage);
+            result = await translateText(extractedText || fileContent, selectedLanguage);
             break;
           case 'zhipu':
-            result = await translateWithZhipu(extractedText, selectedLanguage);
+            result = await translateWithZhipu(extractedText || fileContent, selectedLanguage);
             break;
           case 'hunyuan':
-            result = await translateWithHunyuan(extractedText, selectedLanguage);
+            result = await translateWithHunyuan(extractedText || fileContent, selectedLanguage);
             break;
           case 'step':
-            result = await translateWithStepAPI(extractedText, selectedLanguage);
+            result = await translateWithStepAPI(extractedText || fileContent, selectedLanguage);
             break;
           default:
-            result = await translateWithDeepSeek(extractedText, selectedLanguage);
+            result = await translateWithDeepSeek(extractedText || fileContent, selectedLanguage);
         }
       } catch (serviceError: any) {
-        console.error(`${translationService} 翻译服务错误:`, serviceError);
+        console.error(`${translationService} ${t('console.translationServiceError')}:`, serviceError);
         if (translationService !== 'deepseek') {
-          console.log('尝试使用 DeepSeek 作为备选服务...');
-          result = await translateWithDeepSeek(extractedText, selectedLanguage);
+          console.log(t('console.tryingDeepSeek'));
+          result = await translateWithDeepSeek(extractedText || fileContent, selectedLanguage);
         } else {
           throw serviceError;
         }
@@ -1060,14 +1039,73 @@ export default function TranslatePage() {
         description: t('success.description')
       });
     } catch (error: any) {
-      console.error('翻译错误:', error);
+      console.error(t('console.translationError'), error);
       toast({
-        title: t('error.translating'),
-        description: error.message || t('error.translatingDesc'),
+        title: t('errors.translationError'),
+        description: error.message || t('errors.translationDesc'),
         variant: "destructive"
       });
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleExtractPDFText = async () => {
+    if (!pdfFile) {
+      toast({
+        title: t('error.invalidFile'),
+        description: t('error.invalidFileDesc'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // 检查配额
+    if (!hasRemainingQuota('pdf')) {
+      setShowSubscriptionDialog(true);
+      return;
+    }
+
+    try {
+      setIsFileProcessing(true);
+      
+      // 使用通用PDF处理函数，传入选择的服务商
+      console.log(t('console.pdfProcessing', [fileService]));
+      const content = await extractPDFContent(pdfFile, fileService as 'kimi' | 'mistral', (status) => {
+        console.log(t('console.pdfStatus', [status]));
+        toast({
+          title: status,
+          description: t('success.description')
+        });
+      });
+      
+      console.log(t('console.pdfProcessed', [content?.length || 0]));
+      console.log(t('console.pdfPreview', [content?.substring(0, 100)]));
+      
+      // 处理成功后才记录使用次数
+      if (!await checkAndUpdateUsage('pdf')) {
+        setIsFileProcessing(false);
+        return;
+      }
+      
+      // 将提取的内容设置到提取文本区域
+      setExtractedText(content);
+      // 同时设置到sourceText，确保翻译时能使用
+      setSourceText(content);
+      
+      toast({
+        title: t('success.fileExtracted'),
+        description: t('success.description')
+      });
+    } catch (error: any) {
+      console.error(t('console.fileProcessingError'), error);
+      toast({
+        title: t('error.fileProcessing'),
+        description: error.message || t('error.fileProcessingDesc'),
+        variant: "destructive"
+      });
+    } finally {
+      setIsFileProcessing(false);
     }
   };
 
@@ -1111,60 +1149,52 @@ export default function TranslatePage() {
         });
 
         const result = await response.json();
-        console.log('轮询返回结果:', result);
+        console.log(t('console.videoTaskResult', [result]));
         
         if (result.status === 'success') {
           return result.data;
         }
         
         if (!result.success) {
-          throw new Error(result.message || '任务处理失败');
+          throw new Error(result.message || t('console.videoTaskFailed'));
         }
         
         await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL));
         attempts++;
         
       } catch (error) {
-        console.error('查询任务结果失败:', error);
+        console.error(t('console.videoTaskQueryFailed'), error);
         throw error;
       }
     }
     
-    throw new Error('任务处理超时');
+    throw new Error(t('console.videoTaskTimeout'));
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
       {!mounted ? null : (
         <>
-          <a
-            href={t('banner.twitter')}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full mb-4 p-3 text-center bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow transition-colors duration-200"
-          >
-            {t('banner.text')}
-          </a>
           <Card className="p-4 md:p-6">
             <Tabs defaultValue="text" className="w-full" onValueChange={handleTabChange}>
               <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-2 h-auto mb-6">
-                <TabsTrigger value="text" className="data-[state=active]:bg-muted py-2 px-1 sm:px-2">
+                <TabsTrigger value="text" className="data-[state=active]:bg-primary/10 py-2 px-1 sm:px-2">
                   <Languages className="w-4 h-4 mr-1 sm:mr-2" />
                   <span className="text-xs sm:text-sm">{t('tabs.text')}</span>
                 </TabsTrigger>
-                <TabsTrigger value="image" className="data-[state=active]:bg-muted py-2 px-1 sm:px-2">
+                <TabsTrigger value="image" className="data-[state=active]:bg-primary/10 py-2 px-1 sm:px-2">
                   <ImageIcon className="w-4 h-4 mr-1 sm:mr-2" />
                   <span className="text-xs sm:text-sm">{t('tabs.image')}</span>
                 </TabsTrigger>
-                <TabsTrigger value="file" className="data-[state=active]:bg-muted py-2 px-1 sm:px-2">
+                <TabsTrigger value="file" className="data-[state=active]:bg-primary/10 py-2 px-1 sm:px-2">
                   <FileType className="w-4 h-4 mr-1 sm:mr-2" />
                   <span className="text-xs sm:text-sm">{t('tabs.pdf')}</span>
                 </TabsTrigger>
-                <TabsTrigger value="speech" className="data-[state=active]:bg-muted py-2 px-1 sm:px-2">
+                <TabsTrigger value="speech" className="data-[state=active]:bg-primary/10 py-2 px-1 sm:px-2">
                   {isListening ? <MicOff className="w-4 h-4 mr-1 sm:mr-2" /> : <Mic className="w-4 h-4 mr-1 sm:mr-2" />}
                   <span className="text-xs sm:text-sm">{t('tabs.speech')}</span>
                 </TabsTrigger>
-                <TabsTrigger value="video" className="data-[state=active]:bg-muted py-2 px-1 sm:px-2">
+                <TabsTrigger value="video" className="data-[state=active]:bg-primary/10 py-2 px-1 sm:px-2">
                   <Video className="w-4 h-4 mr-1 sm:mr-2" />
                   <span className="text-xs sm:text-sm">{t('tabs.video')}</span>
                 </TabsTrigger>
@@ -1183,19 +1213,19 @@ export default function TranslatePage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                       <Select 
                         onValueChange={(value) => {
-                          console.log('Selected language:', value)
+                          console.log(t('console.selectedLanguage', [value]))
                           setSelectedLanguage(value)
                         }}
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder={t('selectLanguage')} />
+                          <SelectValue placeholder={t('targetLanguage')} />
                         </SelectTrigger>
                         <SelectContent>
                           {getLanguageCategories().map(category => (
                             <SelectGroup key={category}>
                               <SelectLabel>{category}</SelectLabel>
                               {getLanguagesByCategory(category).map(language => (
-                                <SelectItem key={language.code} value={language.code}>
+                                <SelectItem key={language.code} value={language.name}>
                                   {language.nativeName} ({language.name})
                                 </SelectItem>
                               ))}
@@ -1206,7 +1236,7 @@ export default function TranslatePage() {
 
                       <Select onValueChange={setTranslationService} defaultValue="deepseek">
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder={t('selectService')} />
+                          <SelectValue placeholder={t('serviceProvider')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="deepseek">{t('translationServices.deepseek')}</SelectItem>
@@ -1251,7 +1281,7 @@ export default function TranslatePage() {
                               className="w-full"
                             >
                               <Wand2 className="mr-2 h-4 w-4" />
-                              <span className="text-sm">{t('improve')}</span>
+                              <span className="text-sm">{t('improveTranslation')}</span>
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
@@ -1330,7 +1360,7 @@ export default function TranslatePage() {
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
                       <Select onValueChange={setOcrService} defaultValue="qwen">
                         <SelectTrigger className="w-full sm:w-40">
-                          <SelectValue placeholder={t('selectService')} />
+                          <SelectValue placeholder={t('serviceProvider')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="tencent">{t('ocrServices.tencent')}</SelectItem>
@@ -1350,12 +1380,12 @@ export default function TranslatePage() {
                         {isProcessing ? (
                           <div className="flex items-center">
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            <span>{t('extracting')}</span>
+                            <span>{t('extractingStatus')}</span>
                           </div>
                         ) : (
                           <div className="flex items-center">
                             <FileText className="mr-2 h-4 w-4" />
-                            <span>{t('extract')}</span>
+                            <span>{t('extractAction')}</span>
                           </div>
                         )}
                       </Button>
@@ -1364,7 +1394,7 @@ export default function TranslatePage() {
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
                       <Select onValueChange={setSelectedLanguage}>
                         <SelectTrigger className="w-full sm:w-40">
-                          <SelectValue placeholder={t('selectLanguage')} />
+                          <SelectValue placeholder={t('targetLanguage')} />
                         </SelectTrigger>
                         <SelectContent>
                           {getLanguageCategories().map(category => (
@@ -1382,7 +1412,7 @@ export default function TranslatePage() {
 
                       <Select onValueChange={setTranslationService} defaultValue="deepseek">
                         <SelectTrigger className="w-full sm:w-40">
-                          <SelectValue placeholder={t('selectService')} />
+                          <SelectValue placeholder={t('serviceProvider')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="deepseek">{t('translationServices.deepseek')}</SelectItem>
@@ -1427,7 +1457,7 @@ export default function TranslatePage() {
                               className="w-full sm:w-40"
                             >
                               <Wand2 className="mr-2 h-4 w-4" />
-                              {t('improve')}
+                              {t('improveTranslation')}
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
@@ -1492,26 +1522,36 @@ export default function TranslatePage() {
                       }
                     }}
                   >
-                    {fileContent ? (
-                      <div className="relative w-full h-full p-4">
-                        <textarea
-                          value={fileContent}
-                          readOnly
-                          className="w-full h-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="absolute top-2 right-2"
-                          onClick={() => setFileContent('')}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
+                    {isFileProcessing ? (
+                      <div className="flex flex-col items-center justify-center text-center p-4">
+                        <Loader2 className="h-8 w-8 mb-4 animate-spin text-primary" />
+                        <p className="text-sm text-muted-foreground">{t('processingStatus')}</p>
+                      </div>
+                    ) : pdfPreview ? (
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <FileText className="h-16 w-16 text-primary opacity-20" />
+                        </div>
+                        <div className="absolute top-2 right-2 z-10">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setPdfPreview(null);
+                              setPdfFile(null);
+                            }}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <div className="absolute bottom-2 left-2 z-10 bg-background/80 px-2 py-1 rounded text-xs">
+                          {pdfFile?.name}
+                        </div>
                       </div>
                     ) : (
                       <div className="flex flex-col items-center justify-center text-center p-4">
                         <FileText className="h-8 w-8 mb-4 text-muted-foreground" />
-                        <p className="text-sm text-muted-foreground mb-2">{t('dragAndDrop')}</p>
+                        <p className="text-sm text-muted-foreground mb-2">{t('dragAndDropPDF')}</p>
                         <div className="relative">
                           <Button 
                             variant="secondary" 
@@ -1524,14 +1564,7 @@ export default function TranslatePage() {
                               if (!checkAuth()) return;
                             }}
                           >
-                            {isFileProcessing ? (
-                              <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('processing')}
-                              </>
-                            ) : (
-                              t('selectPDF')
-                            )}
+                            {t('selectPDF')}
                             <input
                               type="file"
                               accept=".pdf,application/pdf"
@@ -1558,10 +1591,41 @@ export default function TranslatePage() {
                     )}
                   </Card>
 
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-4">
+                    {/* 添加PDF处理服务商选择 */}
+                    <Select onValueChange={setFileService} defaultValue="mistral">
+                      <SelectTrigger className="w-full sm:w-40">
+                        <SelectValue placeholder={t('serviceProvider')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mistral">Mistral OCR</SelectItem>
+                        <SelectItem value="kimi">Kimi</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Button
+                      onClick={handleExtractPDFText}
+                      disabled={!pdfFile || isFileProcessing}
+                      className="w-full sm:w-40"
+                    >
+                      {isFileProcessing ? (
+                        <div className="flex items-center justify-center">
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <span className="text-sm">{t('extractingStatus')}</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center">
+                          <FileText className="mr-2 h-4 w-4" />
+                          <span className="text-sm">{t('extractAction')}</span>
+                        </div>
+                      )}
+                    </Button>
+                  </div>
+
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
                     <Select onValueChange={setSelectedLanguage}>
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectLanguage')} />
+                        <SelectValue placeholder={t('targetLanguage')} />
                       </SelectTrigger>
                       <SelectContent>
                         {getLanguageCategories().map(category => (
@@ -1579,7 +1643,7 @@ export default function TranslatePage() {
 
                     <Select onValueChange={setTranslationService} defaultValue="deepseek">
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectService')} />
+                        <SelectValue placeholder={t('serviceProvider')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="deepseek">{t('translationServices.deepseek')}</SelectItem>
@@ -1598,7 +1662,7 @@ export default function TranslatePage() {
 
                     <Button
                       onClick={handleTranslate}
-                      disabled={!fileContent || !selectedLanguage || isProcessing}
+                      disabled={!extractedText && !fileContent || !selectedLanguage || isProcessing}
                       className="w-full sm:w-40"
                     >
                       <Languages className="mr-2 h-4 w-4" />
@@ -1615,7 +1679,7 @@ export default function TranslatePage() {
                             className="w-full sm:w-40"
                           >
                             <Wand2 className="mr-2 h-4 w-4" />
-                            {t('improve')}
+                            {t('improveTranslation')}
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -1624,6 +1688,13 @@ export default function TranslatePage() {
                       </Tooltip>
                     </TooltipProvider>
                   </div>
+
+                  {extractedText && (
+                    <div className="w-full max-w-2xl mx-auto p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                      <h3 className="font-medium mb-2">{t('extractedText')}</h3>
+                      <p className="whitespace-pre-wrap">{extractedText}</p>
+                    </div>
+                  )}
 
                   {translatedText && (
                     <div className="w-full max-w-2xl mx-auto p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
@@ -1720,14 +1791,14 @@ export default function TranslatePage() {
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
                     <Select onValueChange={setSelectedLanguage}>
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectLanguage')} />
+                        <SelectValue placeholder={t('targetLanguage')} />
                       </SelectTrigger>
                       <SelectContent>
                         {getLanguageCategories().map(category => (
                           <SelectGroup key={category}>
                             <SelectLabel>{category}</SelectLabel>
                             {getLanguagesByCategory(category).map(language => (
-                              <SelectItem key={language.code} value={language.code}>
+                              <SelectItem key={language.code} value={language.name}>
                                 {language.nativeName} ({language.name})
                               </SelectItem>
                             ))}
@@ -1738,7 +1809,7 @@ export default function TranslatePage() {
 
                     <Select onValueChange={setTranslationService} defaultValue="deepseek">
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectService')} />
+                        <SelectValue placeholder={t('serviceProvider')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="deepseek">{t('translationServices.deepseek')}</SelectItem>
@@ -1783,7 +1854,7 @@ export default function TranslatePage() {
                             className="w-full sm:w-40"
                           >
                             <Wand2 className="mr-2 h-4 w-4" />
-                            {t('improve')}
+                            {t('improveTranslation')}
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -1893,14 +1964,14 @@ export default function TranslatePage() {
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
                     <Select onValueChange={setSelectedLanguage}>
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectLanguage')} />
+                        <SelectValue placeholder={t('targetLanguage')} />
                       </SelectTrigger>
                       <SelectContent>
                         {getLanguageCategories().map(category => (
                           <SelectGroup key={category}>
                             <SelectLabel>{category}</SelectLabel>
                             {getLanguagesByCategory(category).map(language => (
-                              <SelectItem key={language.code} value={language.code}>
+                              <SelectItem key={language.code} value={language.name}>
                                 {language.nativeName} ({language.name})
                               </SelectItem>
                             ))}
@@ -1911,7 +1982,7 @@ export default function TranslatePage() {
 
                     <Select onValueChange={setTranslationService} defaultValue="deepseek">
                       <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue placeholder={t('selectService')} />
+                        <SelectValue placeholder={t('serviceProvider')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="deepseek">{t('translationServices.deepseek')}</SelectItem>
@@ -1956,7 +2027,7 @@ export default function TranslatePage() {
                             className="w-full sm:w-40"
                           >
                             <Wand2 className="mr-2 h-4 w-4" />
-                            {t('improve')}
+                            {t('improveTranslation')}
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>

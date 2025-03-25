@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useI18n } from '@/lib/i18n/use-translations'
 import { Button } from '@/components/ui/button'
-import { Languages, Image, FileText, Mic, Video, Moon, Lock, Crown, Globe2, Chrome, MonitorSmartphone, ArrowRight, Sparkles } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
@@ -13,6 +12,21 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import { 
+  Languages, 
+  Image, 
+  FileText, 
+  Mic, 
+  Video, 
+  Moon, 
+  Lock, 
+  Crown, 
+  Globe2, 
+  Chrome, 
+  MonitorSmartphone, 
+  ArrowRight, 
+  Sparkles 
+} from 'lucide-react'
 
 export default function Home() {
   const { t } = useI18n()
@@ -173,7 +187,7 @@ export default function Home() {
               </Badge>
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none mb-6">
                 <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/50 to-primary bg-[200%_auto] animate-gradient" suppressHydrationWarning>
-                  {t('landing.hero.title')}
+                  {t('landing.hero.appTitle')}
                 </span>
               </h1>
               <p className="mx-auto max-w-[800px] text-gray-500 md:text-xl lg:text-2xl dark:text-gray-400 leading-relaxed" suppressHydrationWarning>
@@ -214,7 +228,7 @@ export default function Home() {
 
       {/* Features Section */}
       <motion.section 
-        className="w-full py-12 bg-muted/50"
+        className="w-full py-12 bg-primary/5"
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -309,7 +323,7 @@ export default function Home() {
 
       {/* Steps Section */}
       <motion.section 
-        className="w-full py-12 bg-muted/50"
+        className="w-full py-12 bg-primary/5"
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -440,4 +454,4 @@ export default function Home() {
       </motion.section>
     </div>
   )
-} 
+}

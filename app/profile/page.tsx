@@ -96,19 +96,9 @@ export default function ProfilePage() {
 
     // 如果已登录，获取用户信息
     if (status === 'authenticated') {
-      console.log('用户已登录，开始获取用户信息')
-      // 初始获取用户信息
+      console.log('用户已登录，获取用户信息')
+      // 只在页面加载时获取一次用户信息
       fetchUserInfo()
-
-      // 每5秒刷新一次用户信息
-      console.log('设置定时刷新用户信息')
-      const intervalId = setInterval(fetchUserInfo, 5000)
-
-      // 清理定时器
-      return () => {
-        console.log('清理定时刷新')
-        clearInterval(intervalId)
-      }
     }
   }, [status, router, t])
 

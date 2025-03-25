@@ -109,10 +109,10 @@ export async function POST(req: Request) {
             stripe_price_id = NULL,
             stripe_current_period_end = NULL,
             text_quota = -1,
-            image_quota = 10,
-            pdf_quota = 8,
-            speech_quota = 5,
-            video_quota = 2
+            image_quota = 5,
+            pdf_quota = 3,
+            speech_quota = 2,
+            video_quota = 1
           WHERE id = ${userId}
         `
         break

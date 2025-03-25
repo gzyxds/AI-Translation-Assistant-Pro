@@ -56,7 +56,7 @@ export function Header() {
               suppressHydrationWarning 
               className={cn(
                 "font-semibold text-lg hidden sm:inline-block opacity-0 animate-fadeIn",
-                "bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/50 to-primary bg-[200%_auto] animate-gradient",
+                "bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary bg-[200%_auto] animate-gradient",
                 "group-hover:bg-[100%_auto] transition-[background-position] duration-300"
               )}
             >

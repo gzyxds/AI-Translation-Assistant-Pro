@@ -62,8 +62,10 @@ async function retryWithDelay<T>(
   }
 }
 
-export async function extractPDFWithKimi(
+// 通用PDF处理函数，支持选择服务商
+export async function extractPDFContent(
   file: File,
+  service: 'kimi' | 'mistral' = 'mistral', // 默认使用Mistral OCR
   onProgress?: (status: string) => void
 ): Promise<string> {
   try {
@@ -103,7 +105,7 @@ export async function extractPDFWithKimi(
     return await retryWithDelay(
       async () => {
         if (onProgress) {
-          onProgress('正在处理文件...')
+          onProgress(`正在使用${service === 'mistral' ? 'Mistral OCR' : 'Kimi'}处理文件...`)
         }
 
         const response = await fetch('/api/file/extract', {
@@ -114,7 +116,7 @@ export async function extractPDFWithKimi(
           body: JSON.stringify({
             file: compressedFile,
             filename: file.name,
-            service: 'kimi'
+            service: service
           }),
         })
 
@@ -127,14 +129,32 @@ export async function extractPDFWithKimi(
         }
 
         const data = await response.json()
-        if (!data.text) {
-          throw new Error('文件内容获取失败')
+        
+        // 增强对 API 响应的处理
+        if (!data.text || data.text.trim() === '') {
+          console.warn('API 返回的数据中没有有效的 text 字段:', data)
+          
+          // 尝试从其他可能的字段中获取文本
+          if (data.content) {
+            return typeof data.content === 'string' ? data.content : JSON.stringify(data.content)
+          }
+          
+          if (data.result) {
+            return typeof data.result === 'string' ? data.result : JSON.stringify(data.result)
+          }
+          
+          if (data.extracted_text) {
+            return data.extracted_text
+          }
+          
+          // 如果找不到任何文本内容，返回一个友好的错误消息
+          return '无法从文件中提取文本。请尝试使用其他服务或上传不同的文件。'
         }
 
         return data.text
       },
-      5,
-      2000,
+      2, // 减少重试次数从 5 次改为 2 次
+      3000, // 增加初始延迟时间，从 2000 改为 3000
       1.5,
       (retriesLeft, error) => {
         if (onProgress) {
@@ -154,4 +174,12 @@ export async function extractPDFWithKimi(
     console.error('文件处理错误:', error)
     throw error
   }
-} 
+}
+
+// 保留原有函数以保持兼容性
+export async function extractPDFWithKimi(
+  file: File,
+  onProgress?: (status: string) => void
+): Promise<string> {
+  return extractPDFContent(file, 'kimi', onProgress)
+}

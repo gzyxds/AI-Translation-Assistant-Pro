@@ -16,13 +16,15 @@
   "uploadVideo": "上传视频",
   "dropHere": "放开以上传",
   "dragAndDrop": "拖放图片到此处，或点击选择文件",
-  "extractText": "提取文字",
-  "extract": "提取文字",
-  "extracting": "提取中...",
-  "selectLanguage": "选择目标语言",
-  "translate": "开始翻译",
+  "dragAndDropPDF": "拖放PDF文件到此处，或点击选择文件",
+  "extractAction": "提取文字",
+  "extractingStatus": "提取中...",
+  "targetLanguage": "选择目标语言",
+  "selectPDFService": "选择PDF处理服务",
+  "serviceProvider": "选择服务",
+  "translateAction": "开始翻译",
   "translating": "翻译中...",
-  "improve": "优化",
+  "improveTranslation": "优化",
   "improveTooltip": "使用 AI 优化翻译结果",
   "extractedText": "提取的文字",
   "translatedText": "翻译结果",
@@ -31,11 +33,32 @@
   "startListening": "开始录音识别",
   "stopListening": "停止录音",
   "selectImage": "选择图片",
+  "selectPDF": "选择PDF文件",
   "error": {
+    "authRequired": "需要登录",
+    "pleaseLogin": "请登录以访问此功能",
+    "cancelButton": "取消",
+    "registerButton": "注册",
+    "loginButton": "登录",
+    "usageLimitExceeded": "使用次数已达上限",
+    "textLimitExceededDesc": "您已达到每日文本翻译次数上限",
+    "imageLimitExceededDesc": "今日图片识别次数已用完，请明天再试",
+    "pdfLimitExceededDesc": "今日PDF识别次数已用完，请明天再试",
+    "speechLimitExceededDesc": "今日语音识别次数已用完，请明天再试",
+    "videoLimitExceededDesc": "今日视频识别次数已用完，请明天再试",
+    "invalidImageFile": "无效的图片文件",
+    "invalidImageFileDesc": "请选择有效的图片文件",
     "invalidFile": "无效的文件",
     "invalidFileDesc": "请上传图片文件",
+    "invalidAudioFile": "无效的音频文件",
+    "invalidAudioFileDesc": "请选择有效的音频文件",
+    "audioRecognition": "音频识别失败",
+    "audioProcessing": "音频处理失败",
     "invalidVideoFile": "无效的视频文件",
     "invalidVideoFileDesc": "请上传视频文件",
+    "videoProcessingDesc": "视频处理过程中出现错误，请重试",
+    "noTextExtracted": "未提取到文本",
+    "noTextExtractedDesc": "无法从文件中提取任何文本",
     "noImage": "未选择图片",
     "noImageDesc": "请先上传一张图片",
     "noText": "未输入文本",
@@ -44,17 +67,17 @@
     "noLanguageDesc": "请选择目标语言",
     "noTranslation": "无翻译内容",
     "noTranslationDesc": "请先进行翻译",
-    "extracting": "提取文字失败",
+    "extractingError": "提取文字失败",
     "extractingDesc": "请稍后重试",
     "translating": "翻译失败",
     "translatingDesc": "翻译过程中出现错误，请重试",
+    "translationError": "翻译失败",
     "improving": "优化失败",
     "improvingDesc": "优化过程中出现错误，请重试",
     "speechNotSupported": "语音识别不可用",
     "speechNotSupportedDesc": "您的浏览器不支持语音识别功能",
     "speechRecognition": "语音识别错误",
     "videoProcessing": "视频处理失败",
-    "videoProcessingDesc": "视频处理过程中出现错误，请重试",
     "videoRecognition": "视频识别错误",
     "invalidFileType": "无效的文件类型",
     "invalidFileTypeDesc": "请上传 PDF、Word 或图片文件",
@@ -65,18 +88,52 @@
     "fileTooLargeDesc": "视频文件大小不能超过 100MB",
     "videoUploadFailed": "视频上传失败",
     "videoUploadFailedDesc": "请检查网络连接并重试，或尝试上传小一点的视频文件",
-    "usageLimitExceeded": "使用次数已达上限",
-    "imageLimitExceededDesc": "今日图片识别次数已用完，请明天再试",
-    "pdfLimitExceededDesc": "今日PDF识别次数已用完，请明天再试",
-    "speechLimitExceededDesc": "今日语音识别次数已用完，请明天再试",
-    "videoLimitExceededDesc": "今日视频识别次数已用完，请明天再试",
     "serverUploadLimit": "服务器上传限制",
     "serverUploadLimitDesc": "服务器限制单个文件最大上传大小为 10MB，请尝试压缩视频或分段上传",
-    "authRequired": "需要登录",
-    "pleaseLogin": "请先登录以使用此功能",
-    "loginButton": "去登录",
-    "registerButton": "去注册",
-    "cancelButton": "取消"
+    "invalidPDFFile": "无效的PDF文件",
+    "videoServiceNotSupported": "不支持的视频服务",
+    "taskProcessingFailed": "任务处理失败",
+    "taskProcessingTimeout": "任务处理超时"
+  },
+  "console": {
+    "quotaFetchFailed": "获取配额失败:",
+    "quotaInfoFetchFailed": "获取配额信息失败:",
+    "usageUpdateFailed": "更新使用次数失败:",
+    "videoTaskCreateFailed": "创建视频识别任务失败:",
+    "ocrProcessingError": "处理OCR结果时出错:",
+    "videoUploadError": "视频上传错误:",
+    "videoProcessingError": "视频处理错误:",
+    "fileProcessingFailed": "文件处理失败:",
+    "translationServiceError": "{0} 翻译服务错误:",
+    "usingFallbackService": "尝试使用 DeepSeek 作为备选服务...",
+    "translationError": "翻译错误:",
+    "fileProcessingError": "文件处理错误:",
+    "taskQueryFailed": "查询任务结果失败:",
+    "pollingResult": "轮询返回结果:",
+    "startingPdfProcessing": "开始使用 {0} 处理PDF文件:",
+    "pdfProcessingStatus": "PDF处理状态:",
+    "pdfProcessingComplete": "PDF处理完成，提取的文本长度:",
+    "extractedTextPreview": "提取的文本预览:",
+    "videoFramesExtracting": "开始提取视频帧...",
+    "videoFramesExtracted": "视频帧提取完成，帧数: {0}",
+    "videoFramesExample": "第一帧数据示例: {0}",
+    "videoProcessed": "视频处理完成，提取的文本长度: {0}",
+    "videoUploaded": "视频上传成功，URL: {0}",
+    "videoTaskPolling": "开始轮询任务状态...",
+    "videoOcrProcessing": "开始处理OCR结果:",
+    "videoOcrResult": "提取的文本: {0}",
+    "videoNoText": "没有提取到文本",
+    "videoOcrError": "处理OCR结果时出错:",
+    "videoTaskResult": "轮询返回结果:",
+    "videoTaskFailed": "任务处理失败",
+    "videoTaskQueryFailed": "查询任务结果失败:",
+    "videoTaskTimeout": "任务处理超时",
+    "pdfProcessing": "开始使用 {0} 处理PDF文件: {1}",
+    "pdfStatus": "PDF处理状态: {0}",
+    "pdfProcessed": "PDF处理完成，提取的文本长度: {0}",
+    "pdfPreview": "提取的文本预览: {0}...",
+    "tryingDeepSeek": "尝试使用 DeepSeek 作为备选服务...",
+    "selectedLanguage": "已选择语言: {0}"
   },
   "success": {
     "extracted": "文字提取成功",
@@ -94,7 +151,7 @@
   "selectService": "选择翻译服务",
   "selectOcrService": "选择文字识别服务",
   "processing": "正在处理中...",
-  "appName": "智能翻译助手",
+  "appName": "人工智能翻译助手",
   "switchLanguage": "切换语言",
   "toggleTheme": "切换主题",
   "theme": {
@@ -115,8 +172,6 @@
   "uploadFile": "上传文件",
   "fileRecognition": "文件识别",
   "uploadPDF": "上传PDF文件",
-  "dragAndDropPDF": "拖放 PDF 文件到此处，或点击选择文件",
-  "selectPDF": "选择 PDF 文件",
   "selectVideoService": "选择视频服务",
   "videoServices": {
     "gemini": "Gemini",
@@ -145,11 +200,11 @@
     "kimi": "Kimi",
     "step": "阶跃星辰"
   },
-  "title": "智能翻译助手",
+  "title": "人工智能翻译助手",
   "description": "使用AI技术提供高质量的多语言翻译服务",
   "landing": {
     "hero": {
-      "title": "智能翻译助手",
+      "appTitle": "人工智能翻译助手",
       "subtitle": "一站式多语言翻译解决方案，支持文本、图片、PDF、语音和视频翻译",
       "cta": "立即体验",
       "badge": "AI 驱动 · 多语言支持",
@@ -396,11 +451,6 @@
       "github": "使用 GitHub 账号注册",
       "or": "或者",
       "success": "注册成功",
-      "error": {
-        "passwordMismatch": "两次输入的密码不一致",
-        "emailExists": "该邮箱已被注册",
-        "required": "请填写所有必填项"
-      },
       "google": "使用 Google 账号注册"
     },
     "error": {
@@ -439,14 +489,14 @@
         "features": {
           "basic": [
             "无限文本翻译",
-            "每日10次图片识别",
-            "每日8次PDF处理"
+            "每日5次图片识别",
+            "每日3次PDF处理"
           ],
-          "advanced": [
-            "每日5次语音识别",
-            "每日2次视频处理"
+          "freeAdvanced": [
+            "每日2次语音识别",
+            "每日1次视频处理"
           ],
-          "support": [
+          "freeSupport": [
             "基础客服支持"
           ]
         }
@@ -530,5 +580,6 @@
     "home": "首页",
     "features": "功能",
     "pricing": "价格"
-  }
-} 
+  },
+  "processingStatus": "处理中..."
+}
