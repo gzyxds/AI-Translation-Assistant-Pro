@@ -25,16 +25,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     
-    /* 更新为 #8cc63f 绿色 */
-    --primary: 84 68% 51%;
+    /* 更新为 #3b82f6 蓝色 */
+    --primary: 217 91% 60%;
     --primary-foreground: 210 40% 98%;
     
-    /* 更新为匹配绿色的渐变色 */
-    --secondary: 100 65% 45%;
+    /* 更新为匹配蓝色的渐变色 */
+    --secondary: 215 100% 50%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     
-    /* 更新为匹配绿色的渐变色 */
-    --accent: 70 70% 50%;
+    /* 更新为匹配蓝色的渐变色 */
+    --accent: 210 100% 50%;
     --accent-foreground: 222.2 47.4% 11.2%;
     
     --muted: 210 40% 96.1%;
@@ -59,16 +59,16 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     
-    /* 更新为 #8cc63f 绿色 */
-    --primary: 84 68% 51%;
+    /* 更新为 #3b82f6 蓝色 */
+    --primary: 217 91% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
     
-    /* 更新为匹配绿色的渐变色 */
-    --secondary: 100 65% 45%;
+    /* 更新为匹配蓝色的渐变色 */
+    --secondary: 215 100% 50%;
     --secondary-foreground: 210 40% 98%;
     
-    /* 更新为匹配绿色的渐变色 */
-    --accent: 70 70% 50%;
+    /* 更新为匹配蓝色的渐变色 */
+    --accent: 210 100% 50%;
     --accent-foreground: 210 40% 98%;
     
     --muted: 217.2 32.6% 17.5%;

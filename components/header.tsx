@@ -42,7 +42,7 @@ export function Header() {
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center space-x-2 group">
             <Image
-              src="/logo.png"
+              src="/logo.svg"
               alt="AI Translation Assistant"
               width={32}
               height={32}
