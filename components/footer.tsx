@@ -34,7 +34,7 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Button variant="ghost" size="icon" asChild className="h-8 w-8 md:h-10 md:w-10">
             <a
-              href="https://github.com/ItusiAI"
+              href="https://artaigc.cn"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -44,7 +44,7 @@ export function Footer() {
           </Button>
           <Button variant="ghost" size="icon" asChild className="h-8 w-8 md:h-10 md:w-10">
             <a
-              href="https://twitter.com/zyailive"
+              href="https://artaigc.cn"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter"
@@ -54,7 +54,7 @@ export function Footer() {
           </Button>
           <Button variant="ghost" size="icon" asChild className="h-8 w-8 md:h-10 md:w-10">
             <a
-              href="https://itusi.cn"
+              href="https://artaigc.cn"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Website"
